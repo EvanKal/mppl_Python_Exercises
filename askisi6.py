@@ -3,10 +3,7 @@ import requests
 import json
 import datetime
 import calendar
-from multiprocessing import Pool
 
-today = datetime.date.today()
-# today = datetime.date.today().replace(day=3)
 currentMonth = datetime.date.today().month
 monthDescr = calendar.month_name[currentMonth]
 gameID = "1100"
@@ -21,8 +18,10 @@ def initiate():
 
 def getAllDrawResultsForCurrentMonth():
     #API returns all draw results for one day at a time
+    today = datetime.date.today()
+    today = datetime.date.fromisoformat("2021-02-01")
     allDaysToRetrieve = []
-    allDaysToRetrieve  = [date for date in calendar.Calendar().itermonthdates(today.year, today.month) if date.month == datetime.date.today().month] 
+    allDaysToRetrieve  = [date for date in calendar.Calendar().itermonthdates(today.year, today.month) if date.month == today.month and date <= today] 
     allDrawsResults = []
        
     for dayToRetrieveDraws in allDaysToRetrieve:
@@ -37,11 +36,11 @@ def getAllDrawResultsForCurrentMonth():
 
 
 def displayStatisticsPerDay(allDrawsResults):
-    print("Showing results for current month: {monthDescr}".format(monthDescr=monthDescr))
 
-    if(not allDrawsResults):
+    if(not allDrawsResults[0]['content']):
         print("No results to show yet")
     else:
+        print("Showing results for current month: {monthDescr}".format(monthDescr=monthDescr))
         #Itterate over every result per day that contains all 180 draw results of the day
         for resultSet in allDrawsResults:
             print(createDateDescription(resultSet['date']))

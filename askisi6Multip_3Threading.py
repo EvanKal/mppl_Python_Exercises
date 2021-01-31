@@ -3,22 +3,13 @@ import requests
 import json
 import datetime
 import calendar
-from multiprocessing import Pool
-from multiprocessing import Process, Lock
-from multiprocessing.sharedctypes import Value, Array
-import multiprocessing as mp
-from threading import Thread
+from multiprocessing import Lock
 import threading
-import time
 
 
-today = datetime.date.today()
-# today = datetime.date.today().replace(day=3)
 currentMonth = datetime.date.today().month
 monthDescr = calendar.month_name[currentMonth]
 gameID = "1100"
-firstID = ""
-winningNumbersOfFirstDraw = {}
 allDrawsResults = []
 threadIndent=0
 
@@ -28,8 +19,10 @@ def initiate():
     displayStatisticsPerDay(allDrawsResults)
 
 def getAllDrawResultsForCurrentMonth():
+    today = datetime.date.today()
+    # today = datetime.date.fromisoformat("2021-02-01")
     allDaysToRetrieve = []
-    allDaysToRetrieve  = [date for date in calendar.Calendar().itermonthdates(today.year, today.month) if date.month == datetime.date.today().month] 
+    allDaysToRetrieve  = [date for date in calendar.Calendar().itermonthdates(today.year, today.month) if date.month == today.month and date <= today] 
     
     multiProcessCallsToAPI(allDaysToRetrieve)
 
@@ -42,7 +35,7 @@ def multiProcessCallsToAPI(allDaysToRetrieve):
         e = threading.Event()
 
         #Gather all processes in a list so that I can handle their execution
-        allThreads = [Thread(target=getResultsPerDay, args=(lock, e, day, index)) for index, day in enumerate(allDaysToRetrieve)]
+        allThreads = [threading.Thread(target=getResultsPerDay, args=(lock, e, day, index)) for index, day in enumerate(allDaysToRetrieve)]
           
         #Fire all API calls concurrently in multple Threads with no concern about index
         for thread in allThreads:
@@ -78,11 +71,11 @@ def getResultsPerDay(l, e, dayToRetrieveDraws, index):
         e.set()
 
 def displayStatisticsPerDay(allDrawsResults):
-    print("Showing results for current month: {monthDescr}".format(monthDescr=monthDescr))
 
-    if(not allDrawsResults):
+    if(not allDrawsResults[0]['content']):
         print("No results to show yet")
     else:
+        print("Showing results for current month: {monthDescr}".format(monthDescr=monthDescr))
         #Itterate over every result per day that contains all 180 draw results of the day
         for resultSet in allDrawsResults:
             print(createDateDescription(resultSet['date']))
