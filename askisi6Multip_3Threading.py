@@ -29,7 +29,7 @@ def initiate():
 
 def getAllDrawResultsForCurrentMonth():
     allDaysToRetrieve = []
-    allDaysToRetrieve  = [date for date in calendar.Calendar().itermonthdates(today.year, today.month)]  
+    allDaysToRetrieve  = [date for date in calendar.Calendar().itermonthdates(today.year, today.month) if date.month == datetime.date.today().month] 
     
     multiProcessCallsToAPI(allDaysToRetrieve)
 
