@@ -77,8 +77,8 @@ def fillTableHalf():
     tableCells = random.sample(nums, count)
 
     # figure out x,y coordinates based on sequence number and fill cell with 1
-    for cell in tableCells:
-        num = math.modf(cell/squareSize)
+    for cellSeqNumber in tableCells:
+        num = math.modf(cellSeqNumber/squareSize)
         if num[0] != 0:
             x = int(num[1])
             y = round(num[0]/(1/squareSize)) - 1
