@@ -22,12 +22,11 @@ winningNumbersOfFirstDraw = {}
 allDrawsResults = []
 
 def initiate():
-    # global allDrawsResults
-    allDrawsResults = getAllDrawResultsForCurrentMonth()
+    
+    getAllDrawResultsForCurrentMonth()
     displayStatisticsPerDay(allDrawsResults)
 
 def getAllDrawResultsForCurrentMonth():
-    # global allDrawsResults
     #API returns all draw results for one day at a time
     allDaysToRetrieve = []
     allDrawsResults = []
@@ -39,17 +38,15 @@ def getAllDrawResultsForCurrentMonth():
         dayToRetrieveDraws = dayToRetrieveDraws.replace(day=nextDay)
     
     
-    allDrawsResults = multiProcessCallsToAPI(allDaysToRetrieve)
-    return allDrawsResults
+    multiProcessCallsToAPI(allDaysToRetrieve)
 
 def multiProcessCallsToAPI(allDaysToRetrieve):
-    allThreads= []
     allResults=[]
     if __name__ == '__main__':        
         lock = Lock()
 
         #Gather all processes in a list so that I can check whether all of them have terminated
-        allThreads = [Thread(target=getResultsPerDay, args=(lock, day, allResults)) for day in allDaysToRetrieve]
+        allThreads = [Thread(target=getResultsPerDay, args=(lock, day)) for day in allDaysToRetrieve]
           
         #Fire all API calls concurrently in multpleThreads
         for thread in allThreads:
@@ -59,15 +56,8 @@ def multiProcessCallsToAPI(allDaysToRetrieve):
         for thread in allThreads:
             thread.join()
 
-    return allResults
-
-# def appendResult(result):
-#     global allDrawsResults
-#     allDrawsResults.append(result)
-#     print(len(allDrawsResults))
-
-def getResultsPerDay(l, dayToRetrieveDraws, allResults):
-    # global allDrawsResults
+def getResultsPerDay(l, dayToRetrieveDraws):
+    global allDrawsResults
     url = "https://api.opap.gr/draws/v3.0/{gameId}/draw-date/{fromDate}/{toDate}?limit=180&property=winningNumbers".format(gameId = gameID, fromDate =  dayToRetrieveDraws, toDate = dayToRetrieveDraws)
     print(url)
     results = getDictFromJSONResponse(url)
@@ -75,7 +65,7 @@ def getResultsPerDay(l, dayToRetrieveDraws, allResults):
 
     l.acquire()
     try:
-        allResults.append(results)
+        allDrawsResults.append(results)
     finally:
         l.release() 
 
