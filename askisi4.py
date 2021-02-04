@@ -58,7 +58,6 @@ def generateRandomText(textInTrios):
     else:
         print("Retrieved {} sentences.".format(len(randomTextList)))
 
-    print(randomTextList)
     return " ".join(sentence[0] if randomTextList.index(sentence) < len(randomTextList)-1 else " ".join(sentence) for sentence in randomTextList)
     
 
