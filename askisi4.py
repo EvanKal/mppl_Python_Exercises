@@ -36,7 +36,7 @@ def createTrios(text):
     #Normalize whitespace
     text = " ".join(text.split())
 
-    #Split words in consecutive trios
+    #Split words in consecutive trios in the form of tuples
     words = text.split(" ")
     print("Total words: {}".format(len(words)))
     allTrios = [(words[i], words[i+1], words[i+2]) for i in range(len(words)) if i+2 < len(words)]
@@ -58,6 +58,7 @@ def generateRandomText(textInTrios):
     else:
         print("Retrieved {} sentences.".format(len(randomTextList)))
 
+    #Join the first word of each sentence tuple and all three words of the last one
     return " ".join(sentence[0] if randomTextList.index(sentence) < len(randomTextList)-1 else " ".join(sentence) for sentence in randomTextList)
     
 

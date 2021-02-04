@@ -9,10 +9,9 @@ from collections import OrderedDict
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 my_file = os.path.join(THIS_FOLDER, 'hello.txt')
 textData = []
-maxWords = 1000
 
 #Allowed characters are latin alphabet letters and space
-allowedCharacters = [ord(x) for x in "".join((string.ascii_letters))]
+allowedCharacters = [ord(x) for x in "".join((string.ascii_letters,chr(32)))]
 
 def initiate():
     f = open(my_file, "r", encoding="utf-8")
@@ -46,8 +45,6 @@ def countLetters(text):
             counts[asciiLetter] = counts.get(asciiLetter, 0) + 1 
             countsNonAscii[letter] = countsNonAscii.get(letter, 0) + 1 
     
-    print(counts)
-    print(countsNonAscii)
     return counts
 
 def printResults(lettersSum, lettersCount):
