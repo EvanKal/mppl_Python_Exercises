@@ -6,6 +6,9 @@ import calendar
 from multiprocessing import Lock
 import threading
 
+# This version of askisi 6 makes concurrent calls to the API
+# Then handles the order in which the calls append their results to a list 
+# according to the day of the month, so that the order is preserved and no further sorting is required
 
 currentMonth = datetime.date.today().month
 monthDescr = calendar.month_name[currentMonth]
@@ -34,7 +37,7 @@ def multiProcessCallsToAPI(allDaysToRetrieve):
         # Create an event to handle the way the results from the call get gathered
         e = threading.Event()
 
-        #Gather all processes in a list so that I can handle their execution
+        #Gather all processes in a list so that their execution can be handled
         allThreads = [threading.Thread(target=getResultsPerDay, args=(lock, e, day, index)) for index, day in enumerate(allDaysToRetrieve)]
           
         #Fire all API calls concurrently in multple Threads with no concern about index

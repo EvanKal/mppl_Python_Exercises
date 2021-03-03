@@ -4,18 +4,22 @@ import unicodedata
 import random
 import codecs
 
+#Default text file is AliceInWonderland.txt
+#If you want to try a different file place it in the same folder as the .py file
+#and add it's name to the path
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-my_file = os.path.join(THIS_FOLDER, 'hello.txt')
+# my_file = os.path.join(THIS_FOLDER, 'AliceInWonderland.txt')
+my_file = os.path.join(THIS_FOLDER, 'Metamorphosis.txt')
 textData = []
 maxWords = 1000
 
-#Allowed characters are latin alphabet letters and space
+#Allowed characters are latin alphabet letters and space and apostrophe ASCII code 39.
+#Customize the following list for more allowed characters
 allowedCharacters = [ord(x) for x in "".join((string.ascii_letters,chr(32),chr(39)))]
 
 def initiate():
     f = open(my_file, "r", encoding="utf-8")
     textData = f.read().encode('ascii', 'ignore').decode('ascii', 'ignore')
-    # textData = "“Who's making   personal remarks now?” the Hatter asked triumphantly.".encode('ascii', 'ignore').decode('ascii', 'ignore')
     f.close()
 
     print("Length before cleanUp: {}".format(len(textData)))

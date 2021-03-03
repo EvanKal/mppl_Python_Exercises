@@ -7,7 +7,7 @@ import math
 from collections import OrderedDict
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-my_file = os.path.join(THIS_FOLDER, 'hello.txt')
+my_file = os.path.join(THIS_FOLDER, 'AliceInWonderland.txt')
 textData = []
 
 #Allowed characters are latin alphabet letters and space.
@@ -18,10 +18,7 @@ allowedCharacters = [ord(x) for x in "".join((string.ascii_letters))]
 
 def initiate():
     f = open(my_file, "r", encoding="utf-8")
-    # textData = f.read().encode('ascii', 'ignore').decode('ascii', 'ignore')
     textData = f.read()
-    # textData = "“Who's making   personal remarks now?” the Hatter asked triumphantly's making   personal remarks now?” the Hatter asked triumphantly."
-    # textData = "“Who's making   personal remarks now?” the Hatter asked triumphantly's making   personal remarks now?” the Hatter asked triumphantly.".encode('ascii', 'ignore').decode('ascii', 'ignore')
     f.close()
 
     print("Length before cleanUp: {}".format(len(textData)))

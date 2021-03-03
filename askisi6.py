@@ -19,7 +19,7 @@ def initiate():
 def getAllDrawResultsForCurrentMonth():
     #API returns all draw results for one day at a time
     today = datetime.date.today()
-    today = datetime.date.fromisoformat("2021-02-01")
+    # today = datetime.date.fromisoformat("2021-02-01")
     allDaysToRetrieve = []
     allDaysToRetrieve  = [date for date in calendar.Calendar().itermonthdates(today.year, today.month) if date.month == today.month and date <= today] 
     allDrawsResults = []
